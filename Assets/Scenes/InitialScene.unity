@@ -445,8 +445,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31cd6e71866a1dc479aec2eb9b7e8240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  JumpForce: 5
+  Speed: 50
+  JumpForce: 200
 --- !u!95 &875058585
 Animator:
   serializedVersion: 4
@@ -624,7 +624,7 @@ GameObject:
   - component: {fileID: 1551497040}
   m_Layer: 0
   m_Name: Plataforma
-  m_TagString: Untagged
+  m_TagString: Suelo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -4,52 +4,76 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed;
+
+    public float Speed;
     public float JumpForce;
 
-    Vector3 direction;
+    private Rigidbody2D Rigidbody2D;
+    private Animator Animator;
+    private float Horizontal;
+    bool isGrounded;
+
+
+    /*Vector3 direction;
     Rigidbody2D rb;
     Animator anim;
     float horizontal;
-    bool Grounded;
+    bool Grounded;*/
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+        Rigidbody2D = GetComponent<Rigidbody2D>();
+        Animator = GetComponent<Animator>();
+        isGrounded = true;
     }
+    
     void Update()
     {
-        horizontal = Input.GetAxis("Horizontal");
-        direction.x = horizontal * speed;
+        Horizontal = Input.GetAxisRaw("Horizontal");
 
-        if (horizontal < 0.0f) transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
-        else if (horizontal > 0.0f) transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        Animator.SetBool("Walking", Horizontal != 0.0f);
 
-        anim.SetBool("Walking", horizontal != 0.0f);
-
-        /*Debug.DrawRay(transform.position, Vector3.down * 0.70f, Color.red);
-        if (Physics2D.Raycast(transform.position, Vector3.down, 0.1f))
-        {
-            Grounded = true;
-        }
-        else Grounded = false;
-        */
-
-
-        if (Input.GetKeyDown(KeyCode.W) && Grounded)
+        if (Input.GetKeyDown(KeyCode.W) && isGrounded == true)
         {
             Jump();
         }
+        //direction.x = Horizontal * Speed;
+
+        if (Horizontal < 0.0f) transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+        else if (Horizontal > 0.0f) transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
+        
+
+        Debug.DrawRay(transform.position, Vector3.down * 0.70f, Color.red);
+        if (Physics2D.Raycast(transform.position, Vector3.down, 0.1f))
+        {
+            //isGrounded = true;
+        }
+       // else isGrounded = false;
+        
+
+
+       /* if (Input.GetKeyDown(KeyCode.W) && Grounded)
+        {
+            Jump();
+        }*/
     }
 
     void Jump()
     {
-        rb.AddForce(Vector2.up * JumpForce);
+        isGrounded = false;
+        Rigidbody2D.AddForce(Vector2.up * JumpForce);
     }
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(horizontal, rb.velocity.y) * speed;
+        Rigidbody2D.velocity = new Vector2(Horizontal, Rigidbody2D.velocity.y);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.tag == "Suelo")
+        {
+            isGrounded = true;
+        }
     }
 }
